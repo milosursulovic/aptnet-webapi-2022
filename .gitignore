@@ -1,0 +1,55 @@
+# Ignore Visual Studio specific files
+.vscode/
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Ignore build directories
+bin/
+obj/
+
+# ASP.NET Core secrets
+*.swp
+*.swo
+**/secrets.json
+
+# User-specific files
+*.rsuser
+*.userprefs
+
+# Logs
+*.log
+logs/
+LogFiles/
+
+# Crash reports
+*.stackdump
+*.pid
+
+# Configuration files
+appsettings.Development.json
+appsettings.*.json
+
+# Security
+*.pfx
+*.p12
+
+# Node packages
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# .NET Core dependencies
+*.db
+project.lock.json
+project.fragment.lock.json
+
+# Additional files to ignore
+libman.json
+serviceworkerassets
+
+
+.vs/
