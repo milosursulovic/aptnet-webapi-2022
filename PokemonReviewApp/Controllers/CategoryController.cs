@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using PokemonReviewApp.Dto;
 using PokemonReviewApp.Interfaces;
 using PokemonReviewApp.Models;
-using PokemonReviewApp.Repository;
 
 namespace PokemonReviewApp.Controllers
 {
@@ -50,7 +49,7 @@ namespace PokemonReviewApp.Controllers
             var pokemons = _mapper.Map<List<PokemonDto>>(_categoryRepository.GetPokemonByCategory(id));
 
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(ModelState);
 
             return Ok(pokemons);
         }

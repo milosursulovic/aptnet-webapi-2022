@@ -49,7 +49,7 @@ namespace PokemonReviewApp.Controllers
             var country = _mapper.Map<CountryDto>(_countryRepository.GetCountryByOwner(ownerId));
 
             if (!ModelState.IsValid)
-                return BadRequest();
+                return BadRequest(ModelState);
 
             return Ok(country);
         }
