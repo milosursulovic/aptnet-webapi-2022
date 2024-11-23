@@ -92,7 +92,7 @@ namespace PokemonReviewApp.Controllers
         [ProducesResponseType(204)]
         [ProducesResponseType(400)]
         [ProducesResponseType(404)]
-        public IActionResult UpdateCategory(int id, [FromBody] CountryDto updatedCountry)
+        public IActionResult UpdateCountry(int id, [FromBody] CountryDto updatedCountry)
         {
             if (updatedCountry == null)
                 return BadRequest(ModelState);
