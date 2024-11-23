@@ -12,11 +12,20 @@ namespace PokemonReviewApp.Controllers
     public class PokemonController : Controller
     {
         private readonly IPokemonRepository _pokemonRepository;
+        private readonly IOwnerRepository _ownerRepository;
+        private readonly IReviewRepository _reviewRepository;
         private readonly IMapper _mapper;
 
-        public PokemonController(IPokemonRepository pokemonRepository, IMapper mapper)
+        public PokemonController(
+            IPokemonRepository pokemonRepository,
+            IOwnerRepository ownerRepository,
+            IReviewRepository reviewRepository,
+            IMapper mapper
+        )
         {
             _pokemonRepository = pokemonRepository;
+            _ownerRepository = ownerRepository;
+            _reviewRepository = reviewRepository;
             _mapper = mapper;
         }
 
@@ -90,6 +99,40 @@ namespace PokemonReviewApp.Controllers
             }
 
             return Ok("Successufully created");
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult UpdatePokemon(
+            int id,
+            [FromQuery] int ownerId,
+            [FromQuery] int catId,
+            [FromBody] PokemonDto updatedPokemon
+        )
+        {
+            if (updatedPokemon == null)
+                return BadRequest(ModelState);
+
+            if (id != updatedPokemon.Id)
+                return BadRequest(ModelState);
+
+            if (!_pokemonRepository.PokemonExists(id))
+                return NotFound();
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            var pokemonMap = _mapper.Map<Pokemon>(updatedPokemon);
+
+            if (!_pokemonRepository.UpdatePokemon(ownerId, catId, pokemonMap))
+            {
+                ModelState.AddModelError("", "Something went wrong updating pokemon");
+                return StatusCode(500, ModelState);
+            }
+
+            return NoContent();
         }
     }
 }
