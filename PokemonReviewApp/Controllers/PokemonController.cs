@@ -134,5 +134,29 @@ namespace PokemonReviewApp.Controllers
 
             return NoContent();
         }
+
+        [HttpDelete("id")]
+        [ProducesResponseType(204)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult DeletePokemon(int id)
+        {
+            if (!_pokemonRepository.PokemonExists(id))
+                return NotFound();
+
+            var reviewsToDelete = _reviewRepository.GetReviewsOfAPokemon(id);
+            var pokemonToDelete = _pokemonRepository.GetPokemon(id);
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            if (!_reviewRepository.DeleteReviews(reviewsToDelete.ToList()))
+                ModelState.AddModelError("", "Something went wrong when deleting reviews");
+
+            if (!_pokemonRepository.DeletePokemon(pokemonToDelete))
+                ModelState.AddModelError("", "Something went wrong deleting pokemon");
+
+            return NoContent();
+        }
     }
 }
